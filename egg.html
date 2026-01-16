@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Educational Portal | Login</title>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background: #f4f4f9; margin: 0; }
+        .card { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; width: 300px; }
+        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        button { width: 100%; padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        #msg { color: red; font-size: 0.8rem; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Resource Login</h2>
+    <p>Please enter your access code.</p>
+    <input type="password" id="passInput" placeholder="Passphrase...">
+    <button onclick="checkPass()">Access</button>
+    <div id="msg"></div>
+</div>
+
+<script>
+    async function checkPass() {
+        const input = document.getElementById('passInput').value;
+        const msg = document.getElementById('msg');
+        
+        // This is the SHA-256 hash of the word "apples"
+        // To use your own password, generate a hash at 'hosting.ovh/sha256'
+        const targetHash = "61cf37c4d701e612457c1a2d989f664a781f8f906d04d16790a6198889955708";
+
+        const encoder = new TextEncoder();
+        const data = encoder.encode(input);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+
+        if (hashHex === targetHash) {
+            // Redirect to your secret site
+            window.location.href = "https://gn-math.github.io/gn-math-DONTDMCA/"; 
+        } else {
+            msg.innerText = "Invalid access code.";
+        }
+    }
+</script>
+
+</body>
+</html>
